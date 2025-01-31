@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, User, Moon, Sun } from 'lucide-react'; // Added Moon and Sun icons for theme toggle
-import { Button } from './Button'; // Reusable Button component
-import { useTheme } from '../context/ThemeProvider'; // Use the ThemeContext
+import { Moon, Sun, Menu, User } from 'lucide-react';
+import { useTheme } from '../context/ThemeProvider';
+import Button from './Button';
+import { THEME } from '../utils/constants';
 
 const Header = () => {
-    const { theme, toggleTheme } = useTheme(); // Get theme and toggle function from context
+    const { theme, toggleTheme } = useTheme();
 
     return (
         <header className="bg-white dark:bg-gray-800 shadow-md fixed w-full z-10">
@@ -24,19 +25,11 @@ const Header = () => {
                     <Link to="/dashboard" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Dashboard</Link>
                 </nav>
 
-                {/* User Profile, Theme Toggle, and Mobile Menu */}
+                {/* Theme Toggle and User Profile */}
                 <div className="flex items-center space-x-4">
-                    {/* Theme Toggle Button */}
                     <Button variant="ghost" onClick={toggleTheme}>
-                        {theme === 'light' ? <Moon className="h-6 w-6" /> : <Sun className="h-6 w-6" />}
+                        {theme === THEME.LIGHT ? <Moon className="h-6 w-6" /> : <Sun className="h-6 w-6" />}
                     </Button>
-
-                    {/* Mobile Menu Button (Hidden on Desktop) */}
-                    <Button variant="ghost" className="md:hidden">
-                        <Menu className="h-6 w-6" />
-                    </Button>
-
-                    {/* User Profile Button */}
                     <Button variant="ghost">
                         <User className="h-6 w-6" />
                     </Button>

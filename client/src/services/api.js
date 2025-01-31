@@ -1,10 +1,14 @@
 import axios from 'axios';
-
-// Base URL for the backend API
-const API_BASE_URL = 'http://localhost:5000/api'; // Update with your backend URL
+import { API_BASE_URL, API_ENDPOINTS } from '../utils/constants';
+import { handleApiError } from '../utils/helpers';
 
 // Utility function to make API requests
 const makeRequest = async (method, endpoint, data = null, headers = {}) => {
+    const authToken = localStorage.getItem('token'); // Get token from localStorage
+    if (authToken) {
+        headers.Authorization = `Bearer ${authToken}`;
+    }
+
     try {
         const response = await axios({
             method,
@@ -14,56 +18,55 @@ const makeRequest = async (method, endpoint, data = null, headers = {}) => {
         });
         return response.data;
     } catch (error) {
-        console.error(`API Error (${endpoint}):`, error.response?.data || error.message);
-        throw error;
+        throw handleApiError(error); // Use helper function for error handling
     }
 };
 
 // Authentication Services
 export const authService = {
     login: async (email, password) => {
-        return makeRequest('post', '/auth/login', { email, password });
+        return makeRequest('post', API_ENDPOINTS.AUTH.LOGIN, { email, password });
     },
     logout: async () => {
-        return makeRequest('post', '/auth/logout');
+        return makeRequest('post', API_ENDPOINTS.AUTH.LOGOUT);
     },
     register: async (email, password) => {
-        return makeRequest('post', '/auth/register', { email, password });
+        return makeRequest('post', API_ENDPOINTS.AUTH.REGISTER, { email, password });
     },
     checkAuth: async () => {
-        return makeRequest('get', '/auth/check-auth');
+        return makeRequest('get', API_ENDPOINTS.AUTH.CHECK_AUTH);
     },
 };
 
 // Health Data Services
 export const healthService = {
     fetchJournalEntries: async () => {
-        return makeRequest('get', '/health/journal-entries');
+        return makeRequest('get', API_ENDPOINTS.HEALTH.JOURNAL_ENTRIES);
     },
     addJournalEntry: async (entry) => {
-        return makeRequest('post', '/health/journal-entries', entry);
+        return makeRequest('post', API_ENDPOINTS.HEALTH.JOURNAL_ENTRIES, entry);
     },
     analyzeSymptoms: async (symptoms) => {
-        return makeRequest('post', '/health/analyze-symptoms', { symptoms });
+        return makeRequest('post', API_ENDPOINTS.HEALTH.ANALYZE_SYMPTOMS, { symptoms });
     },
     fetchHealthInsights: async () => {
-        return makeRequest('get', '/health/insights');
+        return makeRequest('get', API_ENDPOINTS.HEALTH.HEALTH_INSIGHTS);
     },
 };
 
 // Doctor Recommendations Services
 export const doctorService = {
     fetchNearbyDoctors: async (location) => {
-        return makeRequest('post', '/doctors/nearby', { location });
+        return makeRequest('post', API_ENDPOINTS.DOCTORS.NEARBY, { location });
     },
 };
 
 // Medication Reminders Services
 export const reminderService = {
     fetchReminders: async () => {
-        return makeRequest('get', '/reminders');
+        return makeRequest('get', API_ENDPOINTS.REMINDERS.REMINDERS);
     },
     addReminder: async (reminder) => {
-        return makeRequest('post', '/reminders', reminder);
+        return makeRequest('post', API_ENDPOINTS.REMINDERS.REMINDERS, reminder);
     },
 };

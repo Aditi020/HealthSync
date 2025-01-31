@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../components/Button';
 import { useAuth } from '../hooks/useAuth';
+import { handleApiError } from '../utils/helpers';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -10,7 +11,12 @@ const Login = () => {
 
     const handleLogin = async () => {
         clearError(); // Clear any previous errors
-        await login(email, password);
+        try {
+            await login(email, password);
+            // Redirect to dashboard or handle success
+        } catch (error) {
+            console.error(handleApiError(error)); // Use helper function for error handling
+        }
     };
 
     return (

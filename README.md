@@ -120,6 +120,17 @@ Manages **React Router paths** (AppRoutes.jsx).
 
 ---
 
+
+
+#### api.js (uses constants.js for API endpoints) ####
+#### useAuth.js (uses helpers.js for localStorage and error handling) ####
+#### useFetch.js (uses helpers.js for error handling) ####
+#### Login.jsx (uses helpers.js for localStorage and error handling) ####
+#### Header.jsx (uses constants.js for theme constants) ####
+
+
+
+
 ## **🖥️ Backend (/server)**  
 📌 **Uses: Node.js, Express.js, MongoDB, JWT for authentication**  
 
