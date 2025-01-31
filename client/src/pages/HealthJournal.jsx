@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Plus, Edit, Trash } from 'lucide-react';
 import Button from '../components/Button';
 import { useJournalStore } from '../store';
@@ -15,6 +15,8 @@ const HealthJournal = () => {
     useEffect(() => {
         fetchJournalEntries();
     }, [fetchJournalEntries]);
+
+    const memoizedEntries = useMemo(() => entries, [entries]);
 
     const handleAddEntry = async () => {
         const newEntry = { date: new Date().toISOString(), notes: 'New entry' };
@@ -38,7 +40,7 @@ const HealthJournal = () => {
                 <p className="text-red-500">{error}</p>
             ) : (
                 <div className="space-y-4">
-                    {entries.map((entry) => (
+                    {memoizedEntries.map((entry) => (
                         <div key={entry.id} className="bg-white p-4 rounded-lg shadow-md">
                             <div className="flex justify-between items-center">
                                 <div>

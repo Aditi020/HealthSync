@@ -17,7 +17,7 @@ A **healthcare-focused MERN application** where users can:
 
 ## **🌟 Folder Structure Overview**
 /MERN-Health-App
-│── /client  (Frontend - React, Vite, Tailwind)
+│── /client
 │   ├── /public
 │   │   ├── favicon.ico
 │   │   ├── index.html
@@ -27,33 +27,36 @@ A **healthcare-focused MERN application** where users can:
 │   │   │   ├── logo.png
 │   │   │   ├── styles.css
 │   │   ├── /components
-│   │   │   ├── Header.jsx
-│   │   │   ├── Footer.jsx
 │   │   │   ├── Button.jsx
+│   │   │   ├── ErrorBoundary.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── Header.jsx
 │   │   │   ├── Loader.jsx
-│   │   ├── /pages
-│   │   │   ├── Home.jsx
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── SymptomChecker.jsx
-│   │   │   ├── HealthJournal.jsx
-│   │   │   ├── Login.jsx
-│   │   │   ├── Register.jsx
+│   │   │   ├── ProtectedRoute.jsx
 │   │   ├── /context
 │   │   │   ├── AuthContext.jsx
+│   │   │   ├── ThemeProvider.jsx
 │   │   ├── /hooks
 │   │   │   ├── useAuth.js
 │   │   │   ├── useFetch.js
-│   │   ├── /services
-│   │   │   ├── api.js
-│   │   ├── /store (Redux Toolkit)
-│   │   │   ├── store.js
-│   │   │   ├── authSlice.js
-│   │   │   ├── journalSlice.js
+│   │   ├── /pages
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── HealthJournal.jsx
+│   │   │   ├── Home.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   ├── SymptomChecker.jsx
 │   │   ├── /routes
 │   │   │   ├── AppRoutes.jsx
+│   │   ├── /services
+│   │   │   ├── api.js
+│   │   ├── /store
+│   │   │   ├── authStore.js
+│   │   │   ├── journalStore.js
+│   │   │   ├── index.js
 │   │   ├── /utils
-│   │   │   ├── helpers.js
 │   │   │   ├── constants.js
+│   │   │   ├── helpers.js
 │   │   ├── App.jsx
 │   │   ├── main.jsx
 │   │   ├── index.css
@@ -61,22 +64,22 @@ A **healthcare-focused MERN application** where users can:
 │   ├── package.json
 │   ├── tailwind.config.js
 │   ├── vite.config.js
-│── /server  (Backend - Node, Express, MongoDB)
+│── /server
 │   ├── /config
 │   │   ├── db.js
 │   │   ├── dotenv.js
 │   ├── /controllers
 │   │   ├── authController.js
-│   │   ├── symptomController.js
 │   │   ├── journalController.js
+│   │   ├── symptomController.js
 │   ├── /models
 │   │   ├── User.js
 │   │   ├── JournalEntry.js
 │   │   ├── Symptom.js
 │   ├── /routes
 │   │   ├── authRoutes.js
-│   │   ├── symptomRoutes.js
 │   │   ├── journalRoutes.js
+│   │   ├── symptomRoutes.js
 │   ├── /middleware
 │   │   ├── authMiddleware.js
 │   │   ├── errorMiddleware.js
