@@ -1,7 +1,6 @@
 import { create } from 'zustand';
-import { authService, healthService } from '../services/api';
+import { authService } from '../services/api';
 
-// Auth Store
 export const useAuthStore = create((set) => ({
     user: null,
     loading: false,
@@ -48,33 +47,4 @@ export const useAuthStore = create((set) => ({
     },
 
     clearError: () => set({ error: null }),
-}));
-
-// Journal Store
-export const useJournalStore = create((set) => ({
-    entries: [],
-    loading: false,
-    error: null,
-
-    fetchJournalEntries: async () => {
-        set({ loading: true, error: null });
-        try {
-            const entries = await healthService.fetchJournalEntries();
-            set({ entries, loading: false });
-        } catch (error) {
-            set({ error: error.response?.data || error.message, loading: false });
-        }
-    },
-
-    addJournalEntry: async (entry) => {
-        set({ loading: true, error: null });
-        try {
-            const newEntry = await healthService.addJournalEntry(entry);
-            set((state) => ({ entries: [...state.entries, newEntry], loading: false }));
-        } catch (error) {
-            set({ error: error.response?.data || error.message, loading: false });
-        }
-    },
-
-    clearJournalError: () => set({ error: null }),
 }));
