@@ -1,0 +1,17 @@
+/* Global styles */
+body {
+    font-family: "Inter", sans-serif;
+}
+
+/* Custom utility classes */
+.shadow-soft {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.transition-all {
+    transition: all 0.3s ease;
+}

@@ -1,54 +1,46 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Button from '../components/Button';
-import axios from 'axios'; // For API calls
+import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 const Register = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const { register } = useAuth();
 
-    const handleRegister = async () => {
-        setIsLoading(true);
-        try {
-            const response = await axios.post('/api/register', { email, password });
-            console.log('Registration successful:', response.data);
-            // Redirect to login or handle token storage
-        } catch (error) {
-            console.error('Error registering:', error);
-        } finally {
-            setIsLoading(false);
-        }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await register(name, email, password);
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-                <h1 className="text-3xl font-bold mb-6 text-center">Register</h1>
+        <div className="flex justify-center items-center h-screen">
+            <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 className="text-xl font-bold mb-4">Register</h2>
+                <input
+                    type="text"
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full p-2 border rounded mb-4"
+                />
                 <input
                     type="email"
                     placeholder="Email"
-                    className="w-full p-2 border border-gray-300 rounded-lg mb-4"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    className="w-full p-2 border rounded mb-4"
                 />
                 <input
                     type="password"
                     placeholder="Password"
-                    className="w-full p-2 border border-gray-300 rounded-lg mb-6"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    className="w-full p-2 border rounded mb-4"
                 />
-                <Button className="w-full" onClick={handleRegister} disabled={isLoading}>
-                    {isLoading ? 'Registering...' : 'Register'}
-                </Button>
-                <p className="text-center mt-4">
-                    Already have an account?{' '}
-                    <Link to="/login" className="text-blue-600 hover:underline">
-                        Login
-                    </Link>
-                </p>
-            </div>
+                <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+                    Register
+                </button>
+            </form>
         </div>
     );
 };

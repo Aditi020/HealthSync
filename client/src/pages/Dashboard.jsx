@@ -1,55 +1,75 @@
-import React from 'react';
-import { Calendar, Activity, BookOpen } from 'lucide-react';
-import Button from '../components/Button';
-import { useFetch } from '../hooks/useFetch';
+import { useAuth } from "../hooks/useAuth";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 
 const Dashboard = () => {
-    const { data: healthData, loading, error } = useFetch('/health/insights');
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+    const { user } = useAuth();
 
     return (
-        <div className="min-h-screen bg-gray-50 p-6">
-            <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+        <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-8">
+                <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400">Welcome, {user?.name}!</h1>
+                <div className="flex items-center gap-4">
+                    <Input placeholder="Search symptoms..." className="w-64" />
+                    <Button variant="outline">🔔</Button>
+                    <Button variant="outline">🌙</Button>
+                </div>
+            </div>
 
-            {/* Quick Stats */}
+            {/* Quick Health Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h2 className="text-xl font-semibold mb-2">Recent Journal Entries</h2>
-                    <p className="text-gray-600">View your latest health logs.</p>
-                    <Button className="mt-4" variant="outline">
-                        <BookOpen className="mr-2 h-4 w-4" />
-                        View Journal
-                    </Button>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h2 className="text-xl font-semibold mb-2">Symptom Checker</h2>
-                    <p className="text-gray-600">Check your symptoms now.</p>
-                    <Button className="mt-4" variant="outline">
-                        <Activity className="mr-2 h-4 w-4" />
-                        Check Symptoms
-                    </Button>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h2 className="text-xl font-semibold mb-2">Upcoming Appointments</h2>
-                    <p className="text-gray-600">View your schedule.</p>
-                    <Button className="mt-4" variant="outline">
-                        <Calendar className="mr-2 h-4 w-4" />
-                        View Calendar
-                    </Button>
-                </div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Latest Symptoms</CardTitle>
+                        <CardDescription>🤒 Fever, 🤕 Headache</CardDescription>
+                    </CardHeader>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Next Medication</CardTitle>
+                        <CardDescription>Paracetamol – 2 Tablets at 6:00 PM</CardDescription>
+                    </CardHeader>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Upcoming Appointment</CardTitle>
+                        <CardDescription>Dr. Smith – Cardiologist, Tomorrow at 10:00 AM</CardDescription>
+                    </CardHeader>
+                </Card>
             </div>
 
-            {/* Health Insights */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-                <h2 className="text-xl font-semibold mb-4">Health Insights</h2>
-                {healthData ? (
-                    <p className="text-gray-600">Your health trends and recommendations will appear here.</p>
-                ) : (
-                    <p className="text-gray-600">No data available.</p>
-                )}
-            </div>
+            {/* Symptom Checker Section */}
+            <Card className="mb-8">
+                <CardHeader>
+                    <CardTitle>Symptom Checker</CardTitle>
+                    <CardDescription>Enter your symptoms to get possible conditions.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Input placeholder="Enter symptoms..." className="mb-4" />
+                    <Button className="bg-blue-600 hover:bg-blue-700">Check Symptoms</Button>
+                    <p className="mt-2 text-sm text-gray-500">View past entries</p>
+                </CardContent>
+            </Card>
+
+            {/* Recent Logs Section */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Recent Health Logs</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="space-y-4">
+                        <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+                            <p className="text-sm text-gray-500">2023-10-15</p>
+                            <p>🤒 Fever, 🤕 Headache</p>
+                            <p>Feeling unwell after dinner.</p>
+                            <Button variant="link" className="p-0">View More</Button>
+                        </div>
+                        {/* Add more logs here */}
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     );
 };

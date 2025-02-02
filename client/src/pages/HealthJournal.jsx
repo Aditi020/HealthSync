@@ -1,65 +1,47 @@
-import React, { useEffect, useMemo } from 'react';
-import { Plus, Edit, Trash } from 'lucide-react';
-import Button from '../components/Button';
-import { useJournalStore } from '../store';
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 
 const HealthJournal = () => {
-    const { entries, loading, error, fetchJournalEntries, addJournalEntry } = useJournalStore((state) => ({
-        entries: state.entries,
-        loading: state.loading,
-        error: state.error,
-        fetchJournalEntries: state.fetchJournalEntries,
-        addJournalEntry: state.addJournalEntry,
-    }));
-
-    useEffect(() => {
-        fetchJournalEntries();
-    }, [fetchJournalEntries]);
-
-    const memoizedEntries = useMemo(() => entries, [entries]);
-
-    const handleAddEntry = async () => {
-        const newEntry = { date: new Date().toISOString(), notes: 'New entry' };
-        await addJournalEntry(newEntry);
-    };
-
     return (
-        <div className="min-h-screen bg-gray-50 p-6">
-            <h1 className="text-3xl font-bold mb-8">Health Journal</h1>
+        <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-8">
+                <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400">Health Journal</h1>
+                <Button variant="outline">🔙</Button>
+            </div>
 
-            {/* Add New Entry Button */}
-            <Button className="mb-6" onClick={handleAddEntry} disabled={loading}>
-                <Plus className="mr-2 h-4 w-4" />
-                Add New Entry
-            </Button>
+            {/* Health Log Entry Form */}
+            <Card className="mb-8">
+                <CardHeader>
+                    <CardTitle>Log New Entry</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <Input placeholder="Date & Time" className="mb-4" />
+                    <Input placeholder="Symptoms" className="mb-4" />
+                    <Input placeholder="Medications" className="mb-4" />
+                    <Input placeholder="Doctor Visit Notes" className="mb-4" />
+                    <Button className="bg-blue-600 hover:bg-blue-700">Save Entry</Button>
+                </CardContent>
+            </Card>
 
-            {/* Journal Entries List */}
-            {loading ? (
-                <p className="text-gray-600">Loading journal entries...</p>
-            ) : error ? (
-                <p className="text-red-500">{error}</p>
-            ) : (
-                <div className="space-y-4">
-                    {memoizedEntries.map((entry) => (
-                        <div key={entry.id} className="bg-white p-4 rounded-lg shadow-md">
-                            <div className="flex justify-between items-center">
-                                <div>
-                                    <p className="text-sm text-gray-500">{entry.date}</p>
-                                    <p className="text-lg">{entry.notes}</p>
-                                </div>
-                                <div className="flex space-x-2">
-                                    <Button variant="ghost">
-                                        <Edit className="h-4 w-4" />
-                                    </Button>
-                                    <Button variant="ghost">
-                                        <Trash className="h-4 w-4" />
-                                    </Button>
-                                </div>
-                            </div>
+            {/* Recent Logs */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Recent Logs</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="space-y-4">
+                        <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+                            <p className="text-sm text-gray-500">2023-10-15</p>
+                            <p>🤒 Fever, 🤕 Headache</p>
+                            <p>Feeling unwell after dinner.</p>
+                            <Button variant="link" className="p-0">View More</Button>
                         </div>
-                    ))}
-                </div>
-            )}
+                        {/* Add more logs here */}
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     );
 };

@@ -1,26 +1,27 @@
-import { useEffect } from 'react';
-import { useJournalStore } from '../store';
-import { handleApiError } from '../utils/helpers';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-export const useFetch = (action, dependencies = []) => {
-    const { fetchJournalEntries, entries, loading, error } = useJournalStore((state) => ({
-        fetchJournalEntries: state.fetchJournalEntries,
-        entries: state.entries,
-        loading: state.loading,
-        error: state.error,
-    }));
+const useFetch = (url) => {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await fetchJournalEntries();
+                const response = await axios.get(url);
+                setData(response.data);
             } catch (error) {
-                handleApiError(error); // Use helper function for error handling
+                setError(error);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchData();
-    }, [fetchJournalEntries, ...dependencies]);
+    }, [url]);
 
-    return { data: entries, loading, error };
+    return { data, loading, error };
 };
+
+export default useFetch;

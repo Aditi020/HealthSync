@@ -1,72 +1,41 @@
-import axios from 'axios';
-import { API_BASE_URL, API_ENDPOINTS } from '../utils/constants';
-import { handleApiError } from '../utils/helpers';
+import axios from "axios";
 
-// Utility function to make API requests
-const makeRequest = async (method, endpoint, data = null, headers = {}) => {
-    const authToken = localStorage.getItem('token'); // Get token from localStorage
-    if (authToken) {
-        headers.Authorization = `Bearer ${authToken}`;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+
+const api = axios.create({
+    baseURL: API_BASE_URL,
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
+
+// Add a request interceptor to include the token in headers
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
     }
+    return config;
+});
 
-    try {
-        const response = await axios({
-            method,
-            url: `${API_BASE_URL}${endpoint}`,
-            data,
-            headers,
-        });
-        return response.data;
-    } catch (error) {
-        throw handleApiError(error); // Use helper function for error handling
-    }
+export const checkSymptoms = async (symptoms) => {
+    const response = await api.post("/check-symptoms", { symptoms });
+    return response.data;
 };
 
-// Authentication Services
-export const authService = {
-    login: async (email, password) => {
-        return makeRequest('post', API_ENDPOINTS.AUTH.LOGIN, { email, password });
-    },
-    logout: async () => {
-        return makeRequest('post', API_ENDPOINTS.AUTH.LOGOUT);
-    },
-    register: async (email, password) => {
-        return makeRequest('post', API_ENDPOINTS.AUTH.REGISTER, { email, password });
-    },
-    checkAuth: async () => {
-        return makeRequest('get', API_ENDPOINTS.AUTH.CHECK_AUTH);
-    },
+export const fetchDoctors = async () => {
+    const response = await api.get("/doctors");
+    return response.data;
 };
 
-// Health Data Services
-export const healthService = {
-    fetchJournalEntries: async () => {
-        return makeRequest('get', API_ENDPOINTS.HEALTH.JOURNAL_ENTRIES);
-    },
-    addJournalEntry: async (entry) => {
-        return makeRequest('post', API_ENDPOINTS.HEALTH.JOURNAL_ENTRIES, entry);
-    },
-    analyzeSymptoms: async (symptoms) => {
-        return makeRequest('post', API_ENDPOINTS.HEALTH.ANALYZE_SYMPTOMS, { symptoms });
-    },
-    fetchHealthInsights: async () => {
-        return makeRequest('get', API_ENDPOINTS.HEALTH.HEALTH_INSIGHTS);
-    },
+export const fetchHealthLogs = async () => {
+    const response = await api.get("/health-logs");
+    return response.data;
 };
 
-// Doctor Recommendations Services
-export const doctorService = {
-    fetchNearbyDoctors: async (location) => {
-        return makeRequest('post', API_ENDPOINTS.DOCTORS.NEARBY, { location });
-    },
+export const fetchMedications = async () => {
+    const response = await api.get("/medications");
+    return response.data;
 };
 
-// Medication Reminders Services
-export const reminderService = {
-    fetchReminders: async () => {
-        return makeRequest('get', API_ENDPOINTS.REMINDERS.REMINDERS);
-    },
-    addReminder: async (reminder) => {
-        return makeRequest('post', API_ENDPOINTS.REMINDERS.REMINDERS, reminder);
-    },
-};
+export default api;

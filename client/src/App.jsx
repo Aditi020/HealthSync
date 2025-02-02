@@ -1,24 +1,25 @@
-import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import ErrorBoundary from './components/ErrorBoundary';
-import AppRoutes from './routes/AppRoutes';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import { BrowserRouter as Router } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes";
+import { ThemeProvider } from "./context/ThemeProvider";
+import { AuthProvider } from "./context/AuthContext";
+import ErrorBoundary from "./components/ErrorBoundary";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
-const App = () => {
+function App() {
   return (
-    <BrowserRouter>
-      <ErrorBoundary>
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-grow">
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router>
+            <Header />
             <AppRoutes />
-          </main>
-          <Footer />
-        </div>
-      </ErrorBoundary>
-    </BrowserRouter>
+            <Footer />
+          </Router>
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
-};
+}
 
 export default App;

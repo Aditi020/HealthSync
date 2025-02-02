@@ -1,52 +1,62 @@
-import React, { useState } from 'react';
-import { Search, AlertCircle } from 'lucide-react';
-import Button from '../components/Button';
-import axios from 'axios'; // For API calls
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
 
 const SymptomChecker = () => {
-    const [symptoms, setSymptoms] = useState('');
-    const [results, setResults] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-
-    const handleCheckSymptoms = async () => {
-        setIsLoading(true);
-        try {
-            const response = await axios.post('/api/symptom-checker', { symptoms });
-            setResults(response.data);
-        } catch (error) {
-            console.error('Error checking symptoms:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     return (
-        <div className="min-h-screen bg-gray-50 p-6">
-            <h1 className="text-3xl font-bold mb-8">Symptom Checker</h1>
-
-            <div className="bg-white p-6 rounded-lg shadow-md">
-                <div className="flex items-center border border-gray-300 rounded-lg p-2 mb-4">
-                    <Search className="h-5 w-5 text-gray-400" />
-                    <input
-                        type="text"
-                        placeholder="Enter your symptoms..."
-                        className="flex-grow ml-2 outline-none"
-                        value={symptoms}
-                        onChange={(e) => setSymptoms(e.target.value)}
-                    />
-                </div>
-                <Button onClick={handleCheckSymptoms} disabled={isLoading}>
-                    {isLoading ? 'Checking...' : 'Check Symptoms'}
-                </Button>
+        <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-8">
+                <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400">Symptom Checker</h1>
+                <Button variant="outline">🔙</Button>
             </div>
 
-            {/* Results Section */}
-            {results && (
-                <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
-                    <h2 className="text-xl font-semibold mb-4">Results</h2>
-                    <p className="text-gray-600">{results}</p>
-                </div>
-            )}
+            {/* Symptom Input Section */}
+            <Card className="mb-8">
+                <CardHeader>
+                    <CardTitle>Enter Your Symptoms</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <Input placeholder="Enter symptoms..." className="mb-4" />
+                    <div className="flex gap-4">
+                        <Button className="bg-blue-600 hover:bg-blue-700">Check Symptoms</Button>
+                        <Button variant="outline">Clear</Button>
+                    </div>
+                    <p className="mt-2 text-sm text-gray-500">Be specific about your symptoms for accurate suggestions.</p>
+                </CardContent>
+            </Card>
+
+            {/* Suggested Conditions */}
+            <Card className="mb-8">
+                <CardHeader>
+                    <CardTitle>Suggested Conditions</CardTitle>
+                </CardHeader>
+                <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+                        <h3 className="font-bold">Fever</h3>
+                        <p>High body temperature caused by infection.</p>
+                        <span className="text-sm text-red-500">High Urgency</span>
+                        <Button variant="link" className="p-0">More Info</Button>
+                    </div>
+                    {/* Add more conditions here */}
+                </CardContent>
+            </Card>
+
+            {/* Doctor Recommendations */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Doctor Recommendations</CardTitle>
+                </CardHeader>
+                <CardContent className="flex overflow-x-auto gap-4">
+                    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow min-w-[300px]">
+                        <h3 className="font-bold">Dr. Emily Watson</h3>
+                        <p>Neurologist</p>
+                        <p>⭐️⭐️⭐️⭐️⭐️ (2.5 miles away)</p>
+                        <Button className="mt-2 bg-blue-600 hover:bg-blue-700">Book Appointment</Button>
+                    </div>
+                    {/* Add more doctors here */}
+                </CardContent>
+            </Card>
         </div>
     );
 };
