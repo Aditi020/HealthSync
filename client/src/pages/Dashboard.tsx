@@ -9,7 +9,8 @@ import {
   Pill,
   Droplets,
   Scale,
-  Smile
+  Smile,
+  Plus
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useJournalStore } from '../store/journalStore';
@@ -81,7 +82,16 @@ const Dashboard = () => {
 
       {/* Today's Overview */}
       <section className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Today's Overview</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Today's Overview</h2>
+          <button
+            onClick={() => navigate('/insights', { state: { showLogForm: true } })}
+            className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Log Health Data</span>
+          </button>
+        </div>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
           <HealthMetric
             icon={ThermometerSun}
