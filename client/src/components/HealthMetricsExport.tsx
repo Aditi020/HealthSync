@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { Download, Loader2 } from 'lucide-react';
+import { Download, Loader2, ChevronDown } from 'lucide-react';
 import { useHealthMetricsStore } from '../store/healthMetricsStore';
 
 const HealthMetricsExport = () => {
   const [isExporting, setIsExporting] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { exportMetrics } = useHealthMetricsStore();
 
   const handleExport = async (format: 'csv' | 'pdf') => {
     setIsExporting(true);
+    setIsDropdownOpen(false); // Close dropdown after selecting
     try {
       const data = exportMetrics(format);
-      const blob = new Blob([data], { type: format === 'csv' ? 'text/csv' : 'application/json' });
+      const blob = new Blob([data], { type: format === 'csv' ? 'text/csv' : 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -25,9 +27,9 @@ const HealthMetricsExport = () => {
   };
 
   return (
-    <div className="flex space-x-2">
+    <div className="relative inline-block text-left">
       <button
-        onClick={() => handleExport('csv')}
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         disabled={isExporting}
         className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
       >
@@ -36,20 +38,26 @@ const HealthMetricsExport = () => {
         ) : (
           <Download className="h-4 w-4" />
         )}
-        <span>Export CSV</span>
+        <span>Export</span>
+        <ChevronDown className="h-4 w-4" />
       </button>
-      <button
-        onClick={() => handleExport('pdf')}
-        disabled={isExporting}
-        className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-      >
-        {isExporting ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <Download className="h-4 w-4" />
-        )}
-        <span>Export PDF</span>
-      </button>
+
+      {isDropdownOpen && (
+        <div className="absolute left-0 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg">
+          <button
+            onClick={() => handleExport('csv')}
+            className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+          >
+            Export as CSV
+          </button>
+          <button
+            onClick={() => handleExport('pdf')}
+            className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+          >
+            Export as PDF
+          </button>
+        </div>
+      )}
     </div>
   );
 };

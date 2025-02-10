@@ -1,4 +1,4 @@
-```markdown
+```markdown```
 # HealthSync 🩺
 
 **AI-Powered Health Tracking & Symptom Analysis Platform**
