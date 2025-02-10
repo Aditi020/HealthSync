@@ -17,7 +17,8 @@ import {
   Plus,
   X,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  Target
 } from 'lucide-react';
 import {
   LineChart,
@@ -30,10 +31,22 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
+  ReferenceLine
 } from 'recharts';
 import { useJournalStore } from '../store/journalStore';
 import { useMedicationStore } from '../store/medicationStore';
 import { useHealthMetricsStore } from '../store/healthMetricsStore';
+import HealthMetricsExport from '../components/HealthMetricsExport';
+import HealthGoalsSetting from '../components/HealthGoalsSetting';
+
+const moodEmojis = {
+  great: "😃",
+  better: "🙂",
+  good: "😊",
+  okay: "😐",
+  bad: "😔",
+  worse: "😢"
+};
 
 const Insights = () => {
   const location = useLocation();
@@ -55,7 +68,7 @@ const Insights = () => {
     sleep: '',
     weight: '',
     water: '0',
-    mood: 'good' as 'good' | 'okay' | 'bad'
+    mood: 'good' as keyof typeof moodEmojis
   });
 
   const handleLogSubmit = async (e: React.FormEvent) => {
@@ -106,14 +119,21 @@ const Insights = () => {
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   };
 
-  const moodEmojis = {
-    great: '😃',
-    better: '🙂',
-    good: '😊',
-    okay: '😐',
-    bad: '😔',
-    worse: '😢'
-  } as const;
+  // Calculate moving average
+  const calculateMovingAverage = (data: any[], key: string, window: number = 3) => {
+    return data.map((item, index) => {
+      const start = Math.max(0, index - window + 1);
+      const values = data.slice(start, index + 1).map(d => Number(d[key]));
+      const average = values.reduce((a, b) => a + b, 0) / values.length;
+      return {
+        ...item,
+        [`${key}MA`]: average.toFixed(2)
+      };
+    });
+  };
+
+  const metricsData = getHealthMetricsData();
+  const dataWithMA = calculateMovingAverage(metricsData, 'heartRate');
 
   return (
     <div className="space-y-8">
@@ -140,6 +160,8 @@ const Insights = () => {
             </select>
           </div>
 
+          <HealthMetricsExport />
+
           <button
             onClick={() => setShowLogForm(true)}
             className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -148,6 +170,11 @@ const Insights = () => {
             <span>Log Health Data</span>
           </button>
         </div>
+      </div>
+
+      {/* Health Goals Section */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+        <HealthGoalsSetting />
       </div>
 
       {successMessage && (
@@ -273,19 +300,20 @@ const Insights = () => {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Mood
                   </label>
-                  <div className="flex space-x-4">
-                    {(['great', 'better', 'good', 'okay', 'bad', 'worse'] as const).map((mood) => (
+                  <div className="grid grid-cols-3 gap-2">
+                    {(Object.entries(moodEmojis) as [keyof typeof moodEmojis, string][]).map(([mood, emoji]) => (
                       <button
                         key={mood}
                         type="button"
                         onClick={() => setHealthLog(prev => ({ ...prev, mood }))}
-                        className={`flex-1 py-2 rounded-lg border ${
+                        className={`py-2 rounded-lg border ${
                           healthLog.mood === mood
                             ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                             : 'border-gray-200 dark:border-gray-600'
                         }`}
                       >
-                        <span className="text-2xl">{moodEmojis[mood]}</span>
+                        <span className="text-2xl">{emoji}</span>
+                        <span className="block text-xs mt-1 capitalize">{mood}</span>
                       </button>
                     ))}
                   </div>
@@ -347,7 +375,7 @@ const Insights = () => {
           </div>
         </div>
 
-        {/* Heart Rate Trends */}
+        {/* Heart Rate Trends with Moving Average */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
           <div className="flex items-center space-x-2 mb-6">
             <Heart className="h-5 w-5 text-red-600" />
@@ -357,17 +385,28 @@ const Insights = () => {
           </div>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={getHealthMetricsData()}>
+              <LineChart data={dataWithMA}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis unit=" bpm" />
                 <Tooltip />
+                <Legend />
                 <Line
                   type="monotone"
                   dataKey="heartRate"
                   stroke="#ef4444"
                   strokeWidth={2}
+                  name="Heart Rate"
                 />
+                <Line
+                  type="monotone"
+                  dataKey="heartRateMA"
+                  stroke="#9f1239"
+                  strokeWidth={2}
+                  strokeDasharray="5 5"
+                  name="Moving Average"
+                />
+                <ReferenceLine y={72} stroke="#6b7280" strokeDasharray="3 3" label="Normal" />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -460,13 +499,12 @@ const Insights = () => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />
-                <Tooltip
-                  formatter={(value) => moodEmojis[value as keyof typeof moodEmojis] || value}
-                />
+                <Tooltip />
                 <Bar
                   dataKey="mood"
                   fill="#fbbf24"
                   name="Mood"
+                  label={({ value }) => moodEmojis[value as keyof typeof moodEmojis]}
                 />
               </BarChart>
             </ResponsiveContainer>
