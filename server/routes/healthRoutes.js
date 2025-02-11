@@ -1,7 +1,6 @@
 const express = require('express');
 const { addMetric, getMetrics, addJournalEntry, getJournalEntries } = require('../controllers/healthController');
 const authMiddleware = require('../middleware/authMiddleware');
-
 const router = express.Router();
 
 router.use(authMiddleware);
