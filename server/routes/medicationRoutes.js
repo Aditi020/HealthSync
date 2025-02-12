@@ -1,6 +1,6 @@
-const express = require('express');
-const { addMedication, getMedications, markAsTaken } = require('../controllers/medicationController');
-const authMiddleware = require('../middleware/authMiddleware');
+import express from 'express';
+import { addMedication, getMedications, markAsTaken } from '../controllers/medicationController.js';
+import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -12,4 +12,4 @@ router.route('/')
 
 router.post('/:id/taken', markAsTaken);
 
-module.exports = router;
+export default router;

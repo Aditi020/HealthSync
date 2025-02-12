@@ -1,11 +1,9 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
-const config = require('../config/jwt');
-
-const register = async (req, res) => {
+import User from '../models/User.js'; import jwt from 'jsonwebtoken';
+import config from '../config/jwt.js'; 
+export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    
+
     // Check if user exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -23,11 +21,11 @@ const register = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    
+
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
@@ -44,4 +42,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+export default { register, login };

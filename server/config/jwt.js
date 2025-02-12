@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   accessToken: {
     secret: process.env.JWT_ACCESS_SECRET,
     expiresIn: '15m'

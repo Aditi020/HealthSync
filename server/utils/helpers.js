@@ -21,7 +21,7 @@ const handleError = (fn) => {
     };
 };
 
-module.exports = {
+export default {
     validateEmail,
     validatePassword,
     formatDate,

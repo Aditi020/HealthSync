@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const healthMetricSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -16,4 +16,4 @@ const healthMetricSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('HealthMetric', healthMetricSchema);
+export default mongoose.model('HealthMetric', healthMetricSchema);

@@ -1,11 +1,11 @@
-const Agenda = require('agenda');
+import Agenda from 'agenda';
 
 const agenda = new Agenda({
     db: { address: process.env.MONGO_URI, collection: 'jobs' }
 });
 
 // Schedule medication reminders
-const scheduleReminder = async (userId, medicationId, time) => {
+export const scheduleReminder = async (userId, medicationId, time) => {
     agenda.define(`reminder-${medicationId}`, async (job) => {
         // Implement notification logic here
     });
@@ -14,4 +14,4 @@ const scheduleReminder = async (userId, medicationId, time) => {
     console.log(`Reminder scheduled for ${time}`);
 };
 
-module.exports = { scheduleReminder };
+export default { scheduleReminder };

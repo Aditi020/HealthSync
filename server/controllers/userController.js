@@ -1,21 +1,40 @@
-const winston = require('winston');
+import User from '../models/User.js'; 
 
-const logger = winston.createLogger({
-    level: 'info',
-    format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json()
-    ),
-    transports: [
-        new winston.transports.File({ filename: 'error.log', level: 'error' }),
-        new winston.transports.File({ filename: 'combined.log' })
-    ],
-});
+export const getProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).select('-password');
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch profile' });
+    }
+};
 
-if (process.env.NODE_ENV !== 'production') {
-    logger.add(new winston.transports.Console({
-        format: winston.format.simple()
-    }));
-}
+export const updateProfile = async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(
+            req.userId,
+            { $set: req.body },
+            { new: true, runValidators: true }
+        ).select('-password');
 
-module.exports = logger;
+        res.json(user);
+    } catch (error) {
+        res.status(400).json({ error: 'Update failed' });
+    }
+};
+
+export const updatePreferences = async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(
+            req.userId,
+            { $set: { preferences: req.body } },
+            { new: true }
+        ).select('-password');
+
+        res.json(user);
+    } catch (error) {
+        res.status(400).json({ error: 'Preferences update failed' });
+    }
+};
+
+export default { getProfile, updateProfile, updatePreferences };

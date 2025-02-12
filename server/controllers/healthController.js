@@ -1,8 +1,8 @@
-const HealthMetric = require('../models/HealthMetric');
-const JournalEntry = require('../models/JournalEntry');
+import HealthMetric from '../models/HealthMetric.js'; // Ensure to include the file extension
+import JournalEntry from '../models/JournalEntry.js'; // Ensure to include the file extension
 
 // Health Metrics
-const addMetric = async (req, res) => {
+export const addMetric = async (req, res) => {
     try {
         const metric = new HealthMetric({ ...req.body, user: req.userId });
         await metric.save();
@@ -12,7 +12,7 @@ const addMetric = async (req, res) => {
     }
 };
 
-const getMetrics = async (req, res) => {
+export const getMetrics = async (req, res) => {
     try {
         const metrics = await HealthMetric.find({ user: req.userId });
         res.json(metrics);
@@ -22,7 +22,7 @@ const getMetrics = async (req, res) => {
 };
 
 // Journal Entries
-const addJournalEntry = async (req, res) => {
+export const addJournalEntry = async (req, res) => {
     try {
         const entry = new JournalEntry({ ...req.body, user: req.userId });
         await entry.save();
@@ -32,7 +32,7 @@ const addJournalEntry = async (req, res) => {
     }
 };
 
-const getJournalEntries = async (req, res) => {
+export const getJournalEntries = async (req, res) => {
     try {
         const entries = await JournalEntry.find({ user: req.userId });
         res.json(entries);
@@ -41,4 +41,4 @@ const getJournalEntries = async (req, res) => {
     }
 };
 
-module.exports = { addMetric, getMetrics, addJournalEntry, getJournalEntries };
+export default { addMetric, getMetrics, addJournalEntry, getJournalEntries };

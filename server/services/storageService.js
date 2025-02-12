@@ -1,7 +1,7 @@
-const { Parser } = require('json2csv');
-const PDFDocument = require('pdfkit');
+import { Parser } from 'json2csv';
+import PDFDocument from 'pdfkit';
 
-const generateCSV = (data) => {
+export const generateCSV = (data) => {
     try {
         const parser = new Parser();
         return parser.parse(data);
@@ -10,7 +10,7 @@ const generateCSV = (data) => {
     }
 };
 
-const generatePDF = (data) => {
+export const generatePDF = (data) => {
     return new Promise((resolve, reject) => {
         const doc = new PDFDocument();
         const buffers = [];
@@ -23,4 +23,4 @@ const generatePDF = (data) => {
     });
 };
 
-module.exports = { generateCSV, generatePDF };
+export default { generateCSV, generatePDF };

@@ -1,7 +1,7 @@
-const axios = require('axios');
-const Symptom = require('../models/Symptom');
+import axios from 'axios';
+import Symptom from '../models/Symptom.js'; // Ensure to include the file extension
 
-const analyzeSymptoms = async (req, res) => {
+export const analyzeSymptoms = async (req, res) => {
     try {
         const { symptoms } = req.body;
 
@@ -12,7 +12,7 @@ const analyzeSymptoms = async (req, res) => {
                 messages: [{
                     role: "user",
                     content: `Analyze these symptoms: ${symptoms.join(', ')}. 
-            Suggest possible conditions and recommended actions in JSON format.`
+                    Suggest possible conditions and recommended actions in JSON format.`
                 }],
                 temperature: 0.7
             },
@@ -26,7 +26,6 @@ const analyzeSymptoms = async (req, res) => {
 
         const analysis = response.data.choices[0].message.content;
 
-        // Save to database
         const symptomEntry = new Symptom({
             user: req.userId,
             symptoms,
@@ -40,4 +39,4 @@ const analyzeSymptoms = async (req, res) => {
     }
 };
 
-module.exports = { analyzeSymptoms };
+export default { analyzeSymptoms };

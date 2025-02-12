@@ -1,4 +1,4 @@
-const winston = require('winston');
+import winston from 'winston';
 const { combine, timestamp, json } = winston.format;
 
 const logger = winston.createLogger({
@@ -19,4 +19,4 @@ if (process.env.NODE_ENV !== 'production') {
     }));
 }
 
-module.exports = logger;
+export default logger;

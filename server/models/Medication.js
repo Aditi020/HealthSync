@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const medicationSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -9,5 +9,4 @@ const medicationSchema = new mongoose.Schema({
     nextDose: { type: Date, required: true },
     lastTaken: Date
 });
-
-module.exports = mongoose.model('Medication', medicationSchema);
+export default mongoose.model('Medication', medicationSchema);

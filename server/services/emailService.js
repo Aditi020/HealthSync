@@ -1,20 +1,20 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransport({
+export const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
+        pass: process.env.EMAIL_PASS,
+    },
 });
 
-const sendEmail = async (to, subject, text) => {
+export const sendEmail = async (to, subject, text) => {
     try {
         await transporter.sendMail({
             from: `HealthSync <${process.env.EMAIL_USER}>`,
             to,
             subject,
-            text
+            text,
         });
         return true;
     } catch (error) {
@@ -22,4 +22,4 @@ const sendEmail = async (to, subject, text) => {
     }
 };
 
-module.exports = { sendEmail };
+export default { sendEmail };

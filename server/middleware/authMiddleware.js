@@ -1,9 +1,9 @@
-const jwt = require('jsonwebtoken');
-const config = require('../config/jwt');
+import jwt from 'jsonwebtoken';
+import config from '../config/jwt.js'; // Ensure to include the file extension
 
 const authenticate = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
-  
+
   if (!token) {
     return res.status(401).json({ error: 'Authentication required' });
   }
@@ -17,4 +17,4 @@ const authenticate = (req, res, next) => {
   }
 };
 
-module.exports = authenticate;
+export default authenticate;

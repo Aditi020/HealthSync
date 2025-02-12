@@ -1,6 +1,6 @@
-const Medication = require('../models/Medication');
+import Medication from '../models/Medication.js'; // Ensure to include the file extension
 
-const addMedication = async (req, res) => {
+export const addMedication = async (req, res) => {
     try {
         const medication = new Medication({ ...req.body, user: req.userId });
         await medication.save();
@@ -10,7 +10,7 @@ const addMedication = async (req, res) => {
     }
 };
 
-const getMedications = async (req, res) => {
+export const getMedications = async (req, res) => {
     try {
         const medications = await Medication.find({ user: req.userId });
         res.json(medications);
@@ -19,17 +19,27 @@ const getMedications = async (req, res) => {
     }
 };
 
-const markAsTaken = async (req, res) => {
+export const markAsTaken = async (req, res) => {
     try {
         const medication = await Medication.findById(req.params.id);
+        if (!medication) {
+            return res.status(404).json({ error: 'Medication not found' });
+        }
+
         medication.lastTaken = new Date();
 
         // Calculate next dose
         const nextDose = new Date(medication.nextDose);
         switch (medication.frequency) {
-            case 'daily': nextDose.setDate(nextDose.getDate() + 1); break;
-            case 'weekly': nextDose.setDate(nextDose.getDate() + 7); break;
-            case 'monthly': nextDose.setMonth(nextDose.getMonth() + 1); break;
+            case 'daily':
+                nextDose.setDate(nextDose.getDate() + 1);
+                break;
+            case 'weekly':
+                nextDose.setDate(nextDose.getDate() + 7);
+                break;
+            case 'monthly':
+                nextDose.setMonth(nextDose.getMonth() + 1);
+                break;
         }
 
         medication.nextDose = nextDose;
@@ -40,4 +50,4 @@ const markAsTaken = async (req, res) => {
     }
 };
 
-module.exports = { addMedication, getMedications, markAsTaken };
+export default { addMedication, getMedications, markAsTaken };

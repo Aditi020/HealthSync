@@ -1,6 +1,6 @@
-const express = require('express');
-const { addMetric, getMetrics, addJournalEntry, getJournalEntries } = require('../controllers/healthController');
-const authMiddleware = require('../middleware/authMiddleware');
+import express from 'express';
+import { addMetric, getMetrics, addJournalEntry, getJournalEntries } from '../controllers/healthController.js'; 
+import authMiddleware from '../middleware/authMiddleware.js'; 
 
 const router = express.Router();
 
@@ -14,4 +14,4 @@ router.route('/journal')
     .post(addJournalEntry)
     .get(getJournalEntries);
 
-module.exports = router;
+export default router;

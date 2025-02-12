@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     API_ENDPOINTS: {
         SYMPTOM_CHECK: '/api/symptoms/check',
         HEALTH_DATA: '/api/health/metrics',

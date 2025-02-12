@@ -1,4 +1,4 @@
-const logger = require('./logger');
+import logger from './logger.js'; // Ensure to include the file extension
 
 const errorHandler = (err, req, res, next) => {
     logger.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
@@ -9,4 +9,4 @@ const errorHandler = (err, req, res, next) => {
     });
 };
 
-module.exports = errorHandler;
+export default errorHandler;

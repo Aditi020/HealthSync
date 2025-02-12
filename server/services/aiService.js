@@ -1,10 +1,10 @@
-const { Configuration, OpenAIApi } = require('openai');
-const config = require('../config/openai');
+import { Configuration, OpenAIApi } from 'openai';
+import config from '../config/openai.js'; 
 
 const aiConfig = new Configuration({ apiKey: config.apiKey });
 const openai = new OpenAIApi(aiConfig);
 
-const analyzeSymptoms = async (symptoms) => {
+export const analyzeSymptoms = async (symptoms) => {
     try {
         const response = await openai.createChatCompletion({
             ...config.defaultParams,
@@ -23,4 +23,4 @@ const analyzeSymptoms = async (symptoms) => {
     }
 };
 
-module.exports = { analyzeSymptoms };
+export default { analyzeSymptoms };

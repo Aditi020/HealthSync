@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const journalEntrySchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -13,4 +13,4 @@ const journalEntrySchema = new mongoose.Schema({
     notes: String
 });
 
-module.exports = mongoose.model('JournalEntry', journalEntrySchema);
+export default mongoose.model('JournalEntry', journalEntrySchema);
