@@ -10,7 +10,7 @@ const generateCSV = (data) => {
     }
 };
 
-const generatePDF = (data) => {S
+const generatePDF = (data) => {
     return new Promise((resolve, reject) => {
         const doc = new PDFDocument();
         const buffers = [];
