@@ -9,6 +9,7 @@ import symptomRoutes from './routes/symptomRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import errorHandler from './middleware/errorHandler.js';
 import logger from './middleware/logger.js';
+import 'dotenv/config';
 
 // Create Express app
 const app = express();
