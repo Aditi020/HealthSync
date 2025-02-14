@@ -4,22 +4,27 @@ import logger from '../utils/logger.js';
 export const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
-      maxPoolSize: 10, 
-      serverSelectionTimeoutMS: 5000 
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000
     });
 
-    mongoose.connection.on('connected', () =>
-      logger.info('MongoDB connection established')
-    );
+    mongoose.connection.on('connected', () => {
+      console.log('MongoDB connection established');
+    });
+
+    mongoose.connection.on('error', (err) => {
+      console.error(`MongoDB connection error: ${err.message}`);
+      process.exit(1);
+    });
 
     process.on('SIGINT', async () => {
       await mongoose.connection.close();
-      logger.info('MongoDB connection closed');
+      console.log('MongoDB connection closed');
       process.exit(0);
     });
 
   } catch (err) {
-    logger.error(`MongoDB connection failed: ${err.message}`);
+    console.error(`MongoDB connection failed: ${err.message}`);
     process.exit(1);
   }
 };
