@@ -48,6 +48,22 @@ const moodEmojis = {
   worse: "😢"
 };
 
+const getMoodDistributionData = (metrics) => {
+  const moodCounts = metrics.reduce((acc, metric) => {
+    const mood = metric.mood;
+    if (!acc[mood]) {
+      acc[mood] = 0;
+    }
+    acc[mood]++;
+    return acc;
+  }, {});
+
+  return Object.keys(moodCounts).map((mood) => ({
+    mood,
+    count: moodCounts[mood],
+  }));
+};
+
 const Insights = () => {
   const location = useLocation();
   const [dateRange, setDateRange] = useState('week');
@@ -487,16 +503,20 @@ const Insights = () => {
           </div>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={getHealthMetricsData()}>
+              <BarChart
+                data={getMoodDistributionData(metricsData)}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
+                <XAxis dataKey="mood" />
                 <YAxis />
                 <Tooltip />
+                <Legend />
                 <Bar
-                  dataKey="mood"
+                  dataKey="count"
                   fill="#fbbf24"
-                  name="Mood"
-                  label={({ value }) => moodEmojis[value]}
+                  name="Mood Count"
+                  label={{ position: 'top' }}
                 />
               </BarChart>
             </ResponsiveContainer>
