@@ -78,12 +78,18 @@ const Dashboard = () => {
       </section>
 
       {/* About HealthSync Section with Vector Image */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
         <div className="space-y-6">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">About HealthSync</h2>
-          <p className="text-gray-600 dark:text-gray-300">
-            HealthSync is designed to help you take control of your health. Whether you're tracking symptoms, managing medications, or analyzing health trends, HealthSync provides the tools you need to stay on top of your well-being.
+          <p className="text-gray-700 dark:text-gray-200">
+            <strong className="text-blue-600 dark:text-blue-400">HealthSync</strong> is designed to help you take control of your health with ease and confidence.
+            Whether you're <em className="text-blue-600 dark:text-blue-400">tracking symptoms</em>, managing medications, or analyzing health trends,
+            < >HealthSync</> provides the tools you need to stay on top of your well-being.
+            With a user-friendly interface and <em className="text-blue-600 dark:text-blue-400">smart insights</em>, it empowers you to make informed decisions about your health.
+            <strong className="text-blue-600 dark:text-blue-400">Stay organized, stay informed, and take charge of your wellness journey</strong>
+            with <strong className="text-blue-600 dark:text-blue-400">HealthSync</strong>.
           </p>
+
           <button
             onClick={() => navigate('/symptoms')}
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -93,7 +99,7 @@ const Dashboard = () => {
         </div>
         <div className="rounded-2xl overflow-hidden">
           <img
-            src={Hero_Image} // Replace with your vector image URL
+            src={Hero_Image} 
             alt="HealthSync Illustration"
             className="w-full h-auto"
           />
