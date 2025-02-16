@@ -3,11 +3,15 @@ import { persist } from 'zustand/middleware';
 
 export const useMedicationStore = create(
   persist(
-    (set, get) => ({
+    (set) => ({
       medications: [],
       isLoading: false,
       error: null,
 
+      // Reset action
+      resetMedications: () => set({ medications: [], isLoading: false, error: null }),
+
+      // Add a new medication
       addMedication: (medication) => {
         const newMedication = {
           ...medication,
@@ -19,6 +23,7 @@ export const useMedicationStore = create(
         }));
       },
 
+      // Update an existing medication
       updateMedication: (id, updatedMedication) => {
         set((state) => ({
           medications: state.medications.map((med) =>
@@ -27,12 +32,14 @@ export const useMedicationStore = create(
         }));
       },
 
+      // Delete a medication
       deleteMedication: (id) => {
         set((state) => ({
           medications: state.medications.filter((med) => med.id !== id),
         }));
       },
 
+      // Mark a medication as taken
       markAsTaken: (id) => {
         const now = new Date().toISOString();
         set((state) => ({
@@ -62,6 +69,7 @@ export const useMedicationStore = create(
         }));
       },
 
+      // Get upcoming medications
       getUpcomingMedications: () => {
         const { medications } = get();
         const now = new Date();

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Activity, Mail, Lock, Loader2, User } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login, register, isLoading, error } = useAuthStore();
+  const { login, register, isLoading, error, isAuthenticated } = useAuthStore();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,6 +17,11 @@ const Login = () => {
       await login(email, password);
     } else {
       await register({ name, email, password });
+    }
+
+    // Redirect to the dashboard if authenticated
+    if (isAuthenticated) {
+      navigate('/dashboard');
     }
   };
 

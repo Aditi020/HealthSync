@@ -1,14 +1,18 @@
 import { create } from 'zustand';
 
-export const useSymptomStore = create((set, get) => ({
+export const useSymptomStore = create((set, get) => ({ // Add 'get' parameter here
   symptoms: [],
   conditions: [],
   isLoading: false,
   error: null,
 
+  // Reset action
+  resetSymptoms: () => set({ symptoms: [], conditions: [], error: null }),
+
+  // Add a new symptom
   addSymptom: (symptomName) => {
-    const symptoms = get().symptoms;
-    if (symptoms.some(s => s.name.toLowerCase() === symptomName.toLowerCase())) {
+    const currentSymptoms = get().symptoms; // Use get() to access current state
+    if (currentSymptoms.some(s => s.name.toLowerCase() === symptomName.toLowerCase())) {
       return;
     }
     set(state => ({
@@ -19,22 +23,24 @@ export const useSymptomStore = create((set, get) => ({
     }));
   },
 
+  // Remove a symptom
   removeSymptom: (id) => {
     set(state => ({
       symptoms: state.symptoms.filter(s => s.id !== id)
     }));
   },
 
+  // Check symptoms
   checkSymptoms: async () => {
-    const symptoms = get().symptoms;
-    if (symptoms.length === 0) {
+    const currentSymptoms = get().symptoms;
+    if (currentSymptoms.length === 0) {
       set({ error: 'Please enter at least one symptom' });
       return;
     }
 
     set({ isLoading: true, error: null });
     try {
-      const conditions = await mockCheckSymptoms(symptoms);
+      const conditions = await mockCheckSymptoms(currentSymptoms);
       set({ conditions, isLoading: false });
     } catch (error) {
       set({
@@ -44,6 +50,7 @@ export const useSymptomStore = create((set, get) => ({
     }
   },
 
+  // Clear symptoms
   clearSymptoms: () => {
     set({ symptoms: [], conditions: [], error: null });
   },

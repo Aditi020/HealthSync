@@ -3,9 +3,13 @@ import { persist } from 'zustand/middleware';
 
 export const useHealthMetricsStore = create(
   persist(
-    (set, get) => ({
+    (set) => ({
       metrics: [],
 
+      // Reset action
+      resetMetrics: () => set({ metrics: [] }),
+
+      // Add a new metric
       addMetric: (metric) => {
         set((state) => ({
           metrics: [
@@ -15,6 +19,7 @@ export const useHealthMetricsStore = create(
         }));
       },
 
+      // Update an existing metric
       updateMetric: (date, updates) => {
         set((state) => ({
           metrics: state.metrics.map((metric) =>
@@ -23,12 +28,14 @@ export const useHealthMetricsStore = create(
         }));
       },
 
+      // Get metrics by date range
       getMetricsByDateRange: (startDate, endDate) => {
         return get().metrics.filter(
           (metric) => metric.date >= startDate && metric.date <= endDate
         );
       },
 
+      // Export metrics
       exportMetrics: (format) => {
         const metrics = get().metrics;
         if (format === 'csv') {
@@ -47,6 +54,7 @@ export const useHealthMetricsStore = create(
         return JSON.stringify(metrics, null, 2);
       },
 
+      // Calculate trends
       calculateTrends: (metric, days) => {
         const metrics = get().metrics;
         const now = new Date();
