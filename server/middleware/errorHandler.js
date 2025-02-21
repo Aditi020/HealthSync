@@ -1,4 +1,4 @@
-import logger from './logger.js'; // Ensure to include the file extension
+import logger from './logger.js'; 
 
 const errorHandler = (err, req, res, next) => {
     logger.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);

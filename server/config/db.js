@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
-import logger from '../utils/logger.js';
 
 export const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000
     });
 
     mongoose.connection.on('connected', () => {
@@ -24,7 +24,7 @@ export const connectDB = async () => {
     });
 
   } catch (err) {
-    console.error(`MongoDB connection failed: ${err.message}`);
+    console.error('MongoDB connection failed:', err);
     process.exit(1);
   }
 };

@@ -1,7 +1,10 @@
 import jwt from 'jsonwebtoken';
-import config from '../config/jwt.js'; // Ensure to include the file extension
+import config from '../config/jwt.js';
 
 const authenticate = (req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200); 
+  }
   const token = req.header('Authorization')?.replace('Bearer ', '');
 
   if (!token) {

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Activity, Mail, Lock, Loader2, User } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -9,19 +9,27 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, register, isLoading, error, isAuthenticated } = useAuthStore();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
+
+  // Reset form when switching modes
+  useEffect(() => {
+    setName('');
+    setEmail('');
+    setPassword('');
+  }, [isLogin]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isLogin) {
-      await login(email, password);
-    } else {
-      await register({ name, email, password });
-    }
+    try {
+      const success = isLogin
+        ? await login(email, password)
+        : await register({ name, email, password });
 
-    // Redirect to the dashboard if authenticated
-    if (isAuthenticated) {
-      navigate('/dashboard');
+      if (success) {
+        navigate('/dashboard', { replace: true });
+      }
+    } catch (error) {
+      console.error('Authentication error:', error);
     }
   };
 
@@ -63,7 +71,7 @@ const Login = () => {
                     onChange={(e) => setName(e.target.value)}
                     placeholder="John Doe"
                     className="block w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    required
+                    required={!isLogin}
                   />
                 </div>
               </div>
@@ -103,6 +111,7 @@ const Login = () => {
                   placeholder="••••••••"
                   className="block w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
+                  minLength="6"
                 />
               </div>
             </div>

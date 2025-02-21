@@ -6,7 +6,27 @@ import { useMedicationStore } from './medicationStore';
 import { useHealthMetricsStore } from './healthMetricsStore';
 import { useSymptomStore } from './symptomStore';
 
-const API_BASE_URL = 'http://localhost:5000/api/auth';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+  ? import.meta.env.VITE_API_BASE_URL
+  : 'http://localhost:5000/api';
+
+// Configure axios instance
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true,
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest'
+  }
+});
+
+// Add interceptor to inject token
+api.interceptors.request.use(config => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export const useAuthStore = create(
   persist(
@@ -20,7 +40,7 @@ export const useAuthStore = create(
       register: async (userData) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await axios.post(`${API_BASE_URL}/register`, userData);
+          const response = await api.post('/auth/register', userData);
 
           if (response.data?.token && response.data?.user) {
             // Reset all stores for new user
@@ -36,9 +56,15 @@ export const useAuthStore = create(
               error: null,
             });
             localStorage.setItem('token', response.data.token);
+            return true;
           }
+          return false;
         } catch (error) {
-          set({ error: error.response?.data?.error || 'Registration failed', isLoading: false });
+          const errorMessage = error.response?.data?.error
+            || error.message
+            || 'Registration failed';
+          set({ error: errorMessage, isLoading: false });
+          return false;
         }
       },
 
@@ -46,12 +72,9 @@ export const useAuthStore = create(
       login: async (email, password) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await axios.post(`${API_BASE_URL}/login`, { email, password });
+          const response = await api.post('/auth/login', { email, password });
 
           if (response.data?.token && response.data?.user) {
-            // Store token in localStorage
-            localStorage.setItem('token', response.data.token);
-
             // Reset all stores
             useJournalStore.getState().resetLogs();
             useMedicationStore.getState().resetMedications();
@@ -64,14 +87,16 @@ export const useAuthStore = create(
               isLoading: false,
               error: null,
             });
-          } else {
-            throw new Error('Invalid server response');
+            localStorage.setItem('token', response.data.token);
+            return true;
           }
+          return false;
         } catch (error) {
-          set({
-            error: error.response?.data?.error || 'Invalid email or password',
-            isLoading: false,
-          });
+          const errorMessage = error.response?.data?.error
+            || error.message
+            || 'Login failed';
+          set({ error: errorMessage, isLoading: false });
+          return false;
         }
       },
 
