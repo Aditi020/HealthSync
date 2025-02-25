@@ -46,14 +46,15 @@ export default defineConfig({
       output: {
         manualChunks: {
           react: ['react', 'react-dom', 'react-router-dom'],
-          charts: ['chart.js', 'react-chartjs-2'], // Example
+          charts: ['chart.js', 'react-chartjs-2'],
           utils: ['lodash', 'moment', 'axios'],
         },
       },
     },
   },
   server: {
-    port: 5173,
-    open: true,
+    host: '0.0.0.0',  // Allows external access
+    port: process.env.PORT || 5173,  // Uses Render's assigned port
+    open: false,  // Don't auto-open browser in production
   },
 });
