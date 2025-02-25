@@ -53,8 +53,13 @@ export default defineConfig({
     },
   },
   server: {
-    host: '0.0.0.0',  // Allows external access
-    port: process.env.PORT || 5173,  // Uses Render's assigned port
-    open: false,  // Don't auto-open browser in production
+    host: '0.0.0.0',  // ✅ Allows external access
+    port: process.env.PORT || 5173,  // ✅ Uses Render's assigned port
+    open: false,  // ✅ Prevents auto-opening in production
+  },
+  preview: {
+    port: process.env.PORT || 5173,  // ✅ Ensures correct port usage
+    host: '0.0.0.0',
+    allowedHosts: ['healthsync-upz6.onrender.com'],  // ✅ Allows Render-hosted frontend
   },
 });
