@@ -1,8 +1,8 @@
 {
     "build": {
         "env": {
-            "VITE_API_BASE_URL": "https://healthsync-e5cv.onrender.com"        },
-        "distDir": "dist"
+            "VITE_API_BASE_URL": "https://healthsync-e5cv.onrender.com"
+        }
     },
     "headers": [
         {
@@ -16,6 +16,10 @@
         }
     ],
     "rewrites": [
+        {
+            "source": "/api/(.*)",
+            "destination": "https://healthsync-e5cv.onrender.com/api/$1"
+        },
         {
             "source": "/(.*)",
             "destination": "/index.html"
