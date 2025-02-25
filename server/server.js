@@ -108,7 +108,7 @@ const startServer = async () => {
   if (process.env.NODE_ENV === 'production') {
     module.exports = app;
   } else {
-    app.listen(PORT, () => {
+    app.listen(PORT, "0.0.0.0", () => {
       console.log(`🚀 Server running on port ${PORT}`);
       console.log(`🔗 http://localhost:${PORT}`);
     });
