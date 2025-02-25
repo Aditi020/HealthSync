@@ -2,7 +2,7 @@ Here’s a **comprehensive `README.md`** for your **HealthSync** project that yo
 
 ---
 
-```markdown
+```markdown```
 # HealthSync - Personal Health Management System 🏥
 
 HealthSync is a **full-stack MERN (MongoDB, Express.js, React, Node.js)** application designed to help users manage their health effectively. It combines **AI-powered symptom analysis**, **health tracking**, **medication management**, and **data visualization** into a single platform.
