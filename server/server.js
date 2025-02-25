@@ -46,6 +46,10 @@ const corsOptions = {
   preflightContinue: false
 };
 
+app.get('/', (req, res) => {
+  res.send('👋 Hello, HealthSync Backend is Live!');
+});
+
 // Must be the first middleware after security headers
 app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
