@@ -1,7 +1,7 @@
 {
     "build": {
         "env": {
-            "VITE_API_BASE_URL": "https://your-vercel-app.vercel.app/api"        },
+            "VITE_API_BASE_URL": "https://healthsync-e5cv.onrender.com"        },
         "distDir": "dist"
     },
     "headers": [
