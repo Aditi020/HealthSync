@@ -2,7 +2,7 @@
 
 HealthSync is a **full-stack MERN (MongoDB, Express.js, React, Node.js)** application designed to help users manage their health effectively. It combines **AI-powered symptom analysis**, **health tracking**, **medication management**, and **data visualization** into a single platform.
 
-![HealthSync Dashboard](https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&h=630)
+![HealthSync Dashboard](./client/src/Hero.svg)
 
 ---
 
