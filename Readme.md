@@ -102,38 +102,6 @@ HealthSync is a **full-stack MERN (MongoDB, Express.js, React, Node.js)** applic
 
 ---
 
-## 📁 Project Structure
-
-### **Client**
-```
-client/
-├── src/
-│   ├── components/        # Reusable UI components
-│   ├── pages/             # Page components (e.g., Dashboard, HealthJournal)
-│   ├── store/             # Zustand stores for state management
-│   ├── App.tsx            # Main application component
-│   ├── main.tsx           # Application entry point
-│   ├── index.css          # Global styles
-│   └── vite-env.d.ts      # TypeScript declarations
-```
-
-### **Server**
-```
-server/
-├── config/                # Configuration files (e.g., MongoDB, JWT, OpenAI)
-├── controllers/           # Logic for handling API requests
-├── middleware/            # Middleware for authentication, error handling, and logging
-├── models/                # MongoDB schemas (e.g., User, Medication, Symptom)
-├── routes/                # API routes (e.g., authRoutes, healthRoutes)
-├── services/              # External service integrations (e.g., OpenAI, Nodemailer)
-├── utils/                 # Utility functions and constants
-├── .env                   # Environment variables
-├── app.js                 # Main Express app setup
-├── server.js              # Server entry point
-└── README.md              # Backend documentation
-```
-
----
 
 ## 🔒 Security
 
