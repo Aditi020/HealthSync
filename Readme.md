@@ -1,7 +1,3 @@
-Here’s a **comprehensive `README.md`** for your **HealthSync** project that you can paste directly into your GitHub repository. It includes all the necessary sections, such as project overview, features, installation instructions, and more.
-
----
-
 ```markdown```
 # HealthSync - Personal Health Management System 🏥
 
