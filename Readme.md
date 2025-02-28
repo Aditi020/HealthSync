@@ -141,19 +141,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Lucide Icons](https://lucide.dev/)
 - [Recharts](https://recharts.org/)
 - [OpenAI](https://openai.com/)
-```
 
----
 
-### **How to Use**
-1. Copy the above code.
-2. Paste it into a new `README.md` file in the **root of your GitHub repository**.
-3. Update the placeholders (e.g., `yourusername`, `your_openai_key`) with your actual information.
-4. Commit and push the changes to GitHub.
-
-This `README.md` will provide a **professional and detailed overview** of your project for anyone visiting your repository. Let me know if you need further customization! 🚀
-
-<!-- ```markdown```
+ ```markdown```
 # HealthSync 🩺
 
 **AI-Powered Health Tracking & Symptom Analysis Platform**
